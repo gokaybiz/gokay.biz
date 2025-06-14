@@ -158,13 +158,13 @@ if (currentPage.value !== (Number(route.query.page) || 1)) {
                     <li v-for="post in posts?.items" :key="post.id">
                         <nuxt-link
                             :to="`${post.path}`"
-                            class="text-sm md:text-xl font-short-stack font-normal hover:text-blue-500 flex"
+                            class="text-sm md:text-xl font-short-stack font-normal flex"
                         >
                             <div
-                                class="p-4 rounded-lg transition-colors duration-200 doodle-border-another bg-stone-100 hover:bg-gray-50 dark:bg-gray-800 hover:dark:bg-gray-600 w-full flex flex-6/12 justify-between"
+                                class="p-4 rounded-lg transition-colors duration-200 doodle-border-another bg-stone-100 hover:bg-gray-50 dark:bg-gray-800 hover:dark:bg-gray-600 w-full flex flex-6/12 justify-between hover:text-blue-500 flex-wrap"
                             >
                                 <h3
-                                    class="text-sm md:text-xl font-short-stack text-primary-500 dark:text-zinc-300"
+                                    class="text-sm md:text-xl font-short-stack text-primary-500 dark:text-zinc-300 hover:text-primary"
                                 >
                                     {{ post.title }}
                                 </h3>

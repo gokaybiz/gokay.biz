@@ -55,7 +55,7 @@ const handleClick = (): void => {
         class="block right-2 md:right-10 lg:right-35 w-4 fixed top-0 z-index-3"
     >
         <div
-            class="border-l-2 border-dotted border-gray-700 dark:border-slate-500 overflow-hidden"
+            class="border-l-2 border-dotted border-gray-700 dark:border-slate-500 overflow-hidden cursor-pointer"
             :style="{
                 height: `${chainState.displayHeight}px`,
                 transition: `height ${ANIMATION_DURATION}ms ease-out`,
@@ -63,7 +63,7 @@ const handleClick = (): void => {
         ></div>
         <div
             @click="handleClick"
-            class="bg-gray-700 dark:bg-slate-600 w-[15px] h-[15px] rounded-full relative -left-[6px] cursor-pointer"
+            class="bg-gray-700 dark:bg-slate-600 w-[15px] h-[15px] rounded-full relative -left-[6px]"
         ></div>
     </div>
 </template>

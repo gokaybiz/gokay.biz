@@ -257,7 +257,7 @@ const metadataItems = computed(() =>
 
             <!-- Article Content -->
             <article
-                class="max-w-full prose dark:prose-invert prose-a:no-underline font-inter"
+                class="max-w-full prose dark:prose-invert prose-a:no-underline font-inter break-words"
             >
                 <slot />
             </article>

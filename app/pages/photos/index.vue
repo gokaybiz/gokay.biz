@@ -262,7 +262,7 @@ setPageSeo({
                 <!-- Gallery state -->
                 <div
                     v-else-if="showGallery"
-                    class="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-4"
+                    class="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-8 md:space-y-4"
                 >
                     <div
                         v-for="img in processedImages"
