@@ -1,0 +1,10 @@
+title: Cloudflare Analytics Proxy Worker
+description: A Cloudflare Worker that proxies Cloudflare Web Analytics requests to bypass ad blockers.
+techs:
+  - Typescript
+  - Cloudflare Workers
+links:
+  - type: github
+    url: https://github.com/gokaybiz/cf-web-analytics-proxy
+  - type: demo
+    url: https://kontroll.gokay.biz/beacon.min.js
