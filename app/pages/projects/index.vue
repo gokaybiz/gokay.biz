@@ -2,7 +2,9 @@
 import type { ProjectsCollectionItem } from "@nuxt/content";
 import type { ProjectStatus, ProjectLink } from "@/../content.config.ts";
 
-interface ProjectWithComputedData extends ProjectsCollectionItem {
+interface ProjectWithComputedData
+    extends Omit<ProjectsCollectionItem, "description"> {
+    readonly description: readonly string[];
     readonly statusClasses: string;
     readonly formattedLinks: readonly {
         readonly type: ProjectLink["type"];
@@ -36,11 +38,17 @@ const getLinkIcon = (linkType: ProjectLink["type"]): string => {
 };
 
 const formatLinkText = (linkType: string): string => linkType.replace("-", " ");
+const formatDescription = (description: string): string[] =>
+    description
+        .split("\\n")
+        .map((line) => line.trim())
+        .filter((line) => line.length > 0);
 
 const transformProject = (
     project: ProjectsCollectionItem,
 ): ProjectWithComputedData => ({
     ...project,
+    description: formatDescription(project.description || ""),
     statusClasses: getStatusClasses(project.status as ProjectStatus),
     formattedLinks: (project.links || []).map((link) => ({
         ...link,
@@ -119,7 +127,7 @@ const projectsWithFormattedData = computed(() =>
                     v-else-if="projectsWithFormattedData.length > 0"
                     v-for="(project, index) in projectsWithFormattedData"
                     :key="index"
-                    class="doodle-border-another p-6 rounded-xl bg-white dark:bg-gray-800 hover:shadow-lg transition-all duration-300"
+                    class="doodle-border-another p-6 rounded-xl bg-white dark:bg-gray-800 hover:shadow-lg transition-all duration-300 flex flex-col"
                 >
                     <div
                         class="flex items-center justify-between mb-4 sm:flex-nowrap flex-wrap"
@@ -137,33 +145,44 @@ const projectsWithFormattedData = computed(() =>
                         </span>
                     </div>
 
-                    <p class="text-gray-600 dark:text-gray-300 mb-4">
-                        {{ project.description }}
-                    </p>
-
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span
-                            v-for="(tech, techIndex) in project.techs"
-                            :key="techIndex"
-                            class="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-sm text-gray-600 dark:text-gray-300"
+                    <div class="flex-1">
+                        <p
+                            class="text-gray-600 dark:text-gray-300 mb-2"
+                            v-for="description in project.description"
                         >
-                            {{ tech }}
-                        </span>
+                            {{ description.trim() }}
+                        </p>
                     </div>
 
-                    <div class="flex flex-col md:flex-row gap-3 mt-4">
-                        <NuxtLink
-                            v-for="(link, linkIndex) in project.formattedLinks"
-                            :key="linkIndex"
-                            :to="link.url"
-                            :external="link.url.startsWith('http')"
-                            class="flex items-center px-4 py-2 doodle-border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                        >
-                            <Icon :name="link.icon" class="!w-5 !h-5 mr-2" />
-                            <span class="capitalize">{{
-                                link.displayText
-                            }}</span>
-                        </NuxtLink>
+                    <div class="mt-auto">
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span
+                                v-for="(tech, techIndex) in project.techs"
+                                :key="techIndex"
+                                class="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-sm text-gray-600 dark:text-gray-300"
+                            >
+                                {{ tech }}
+                            </span>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row gap-3">
+                            <UtilLink
+                                v-for="(
+                                    link, linkIndex
+                                ) in project.formattedLinks"
+                                :key="linkIndex"
+                                :href="link.url"
+                                class="flex items-center px-4 py-2 doodle-border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                            >
+                                <Icon
+                                    :name="link.icon"
+                                    class="!w-5 !h-5 mr-2"
+                                />
+                                <span class="capitalize">{{
+                                    link.displayText
+                                }}</span>
+                            </UtilLink>
+                        </div>
                     </div>
                 </div>
                 <div v-else>

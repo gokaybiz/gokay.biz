@@ -64,7 +64,7 @@ const ProjectLinkTypeEnum = z.enum([
 export const ProjectSchema = z.object({
   title: z.string().min(1, "Title is missing"),
   description: z.string().min(1, "Project needs a description"),
-  techs: z.array(z.string()).min(1, "Please provide tech-stack"),
+  techs: z.array(z.string()).min(1, "Please provide at least one tech"),
   status: ProjectStatusEnum.default("active"),
   links: z
     .array(
