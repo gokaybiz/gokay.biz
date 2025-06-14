@@ -87,6 +87,9 @@ export default defineNuxtConfig({
     },
     display: "swap",
   },
+  image: {
+    provider: "none",
+  },
   dayjs: {
     locales: ["en"],
     plugins: ["timezone", "utc"],
@@ -123,10 +126,15 @@ export default defineNuxtConfig({
     resolve: {
       alias: {
         "@": resolve(__dirname, "./"),
+        "@@": resolve(__dirname, "./"),
+        "~": resolve(__dirname, "./app"),
       },
     },
     build: {
       sourcemap: process.env.NODE_ENV === "development",
+    },
+    optimizeDeps: {
+      include: ["vue", "vue-router"],
     },
   },
   runtimeConfig: {
