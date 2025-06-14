@@ -1,4 +1,11 @@
 <script setup lang="ts">
+import {
+    definePageMeta,
+    useNormalizePath,
+    useAsyncData,
+    queryCollection,
+} from "#imports";
+import { useRoute, useRouter } from "vue-router";
 import ContentLayout from "~/layouts/ContentLayout.vue";
 
 definePageMeta({

@@ -4,6 +4,7 @@ import { viteConfig } from "./vite";
 import { runtimeConfig } from "./runtime";
 import { buildConfig } from "./build";
 import { devConfig } from "./dev";
+import { hooksConfig } from "./hooks";
 
 export const config = {
   ...appConfig,
@@ -12,6 +13,7 @@ export const config = {
   ...runtimeConfig,
   ...buildConfig,
   ...devConfig,
+  ...hooksConfig,
 };
 
 export {
@@ -21,4 +23,5 @@ export {
   runtimeConfig,
   buildConfig,
   devConfig,
+  hooksConfig,
 };

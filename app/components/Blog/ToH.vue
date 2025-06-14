@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { Toc, TocLink } from "@nuxtjs/mdc";
+import { type PropType, ref, computed } from "vue";
+import { useRoute } from "vue-router";
 
 // --- Types ---
 interface TocState {

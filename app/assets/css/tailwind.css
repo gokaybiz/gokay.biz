@@ -282,7 +282,8 @@
           If use this, considering the example, the text will be underlined by default on a touchscreen.
   */
     @media not all and (hover: hover) {
-        & {
+        &:active,
+        &:focus {
             @slot;
         }
     }

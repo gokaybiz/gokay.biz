@@ -1,6 +1,15 @@
 <script setup lang="ts">
+import {
+    definePageMeta,
+    useNormalizePath,
+    queryCollection,
+    useAsyncData,
+    createError,
+} from "#imports";
 import type { PostsCollectionItem } from "@nuxt/content";
 import { Effect, Console, Exit } from "effect";
+import type { Ref } from "vue";
+import { useRoute } from "vue-router";
 
 import ContentLayout from "~/layouts/ContentLayout.vue";
 

@@ -2,6 +2,14 @@
 import { Effect, pipe } from "effect";
 import { navigateTo } from "#app";
 import type { PostsCollectionItem } from "@nuxt/content";
+import {
+    useSeo,
+    useDayjs,
+    queryCollection,
+    useAsyncData,
+    useDarkMode,
+} from "#imports";
+import { computed } from "vue";
 
 // --- Types ---
 interface QuickLink {

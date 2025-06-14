@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { NuxtLink } from "#components";
+import { useRuntimeConfig } from "#app";
+import { useAttrs, computed } from "vue";
 
 // --- Types ---
 type Href = string;
@@ -74,7 +76,7 @@ const isInternalPath = (href: Href): boolean => {
         try {
             return (
                 new URL(href).hostname ===
-                new URL(config.public.siteUrl).hostname
+                new URL(config.public.siteUrl as string).hostname
             );
         } catch {
             return false;

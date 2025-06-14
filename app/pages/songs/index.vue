@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { Effect, pipe } from "effect";
 import type {
     FrequentTrack,
     LastfmResponse,
     LastfmTrack,
 } from "~/types/lastfm";
+
+import { useSeo, useLazyFetch, useDayjs, createError } from "#imports";
+import { computed, ref, watch } from "vue";
 
 // --- Types ---
 interface ProcessedTrack {
@@ -148,7 +150,7 @@ const { data, error, status, refresh, clear } = useLazyFetch<LastfmResponse>(
     },
 );
 
-// Handle errors with Effect-TS pattern
+// Handle errors
 if (error.value) {
     throw createError({
         statusCode: 500,

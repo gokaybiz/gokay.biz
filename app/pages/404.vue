@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useSeo } from "#imports";
+
 const { setPageSeo } = useSeo();
 setPageSeo({
     type: "website",

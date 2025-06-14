@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { NuxtError } from "#app";
+import { useNavbar, setPageLayout } from "#imports";
+import { computed } from "vue";
 
 const props = defineProps<{
     error: NuxtError;

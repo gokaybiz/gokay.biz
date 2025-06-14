@@ -16,9 +16,34 @@ export const viteConfig: ViteConfig = {
     },
     build: {
       sourcemap: process.env.NODE_ENV === "development",
+      rollupOptions: {
+        output: {
+          experimentalMinChunkSize: 46 * 1024, // 46kb
+        },
+      },
+      minify: "terser",
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true,
+          pure_funcs: ["console.log", "console.info"],
+        },
+        format: {
+          comments: false,
+        },
+        mangle: {
+          safari10: true,
+        },
+      },
+      cssMinify: true,
+      cssCodeSplit: true,
+      modulePreload: {
+        polyfill: true,
+      },
     },
     optimizeDeps: {
       include: ["vue", "vue-router"],
+      exclude: ["@nuxt/telemetry"],
     },
   },
 };

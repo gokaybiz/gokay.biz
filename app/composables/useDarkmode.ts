@@ -6,11 +6,16 @@ export enum ThemeMode {
 export type ThemeType = `${ThemeMode}`;
 
 const getCurrentMode = (): ThemeType =>
-  document.documentElement.classList.contains(ThemeMode.Dark)
-    ? ThemeMode.Dark
-    : ThemeMode.Light;
+  typeof document === "undefined"
+    ? ThemeMode.Light
+    : document.documentElement.classList.contains(ThemeMode.Dark)
+      ? ThemeMode.Dark
+      : ThemeMode.Light;
 
 const setMode = (mode: ThemeType) => {
+  if (typeof document === "undefined" || typeof localStorage === "undefined")
+    return;
+
   document.documentElement.classList.toggle(
     ThemeMode.Dark,
     mode === ThemeMode.Dark,

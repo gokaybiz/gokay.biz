@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Effect, pipe } from "effect";
 import type { VscoImage } from "~/types/vsco";
-
+import { useDayjs, useSeo, useLazyFetch } from "#imports";
+import { watch, computed, ref } from "vue";
 // --- Types ---
 interface ModalState {
     readonly isOpen: boolean;

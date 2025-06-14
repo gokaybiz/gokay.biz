@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useDarkMode } from "#imports";
 import Logo from "~/assets/images/logo.svg";
 
 type NavLink = Readonly<{
@@ -64,7 +65,7 @@ const toggleDarkMode = useDarkMode();
             >
                 <button
                     @click="toggleDarkMode"
-                    class="p-3 md:p-2 mt-1 md:mt-0 rounded-full bg-gray-200 dark:bg-gray-800"
+                    class="p-3 md:p-2 mt-1 md:mt-0 rounded-full bg-gray-200 dark:bg-gray-800 cursor-pointer"
                 >
                     <Icon
                         name="ph:moon-stars-bold"

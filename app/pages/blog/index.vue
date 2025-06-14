@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useDayjs, useSeo, queryCollection, useAsyncData } from "#imports";
 import type { PostsCollectionItem } from "@nuxt/content";
 import { Effect, pipe, Request, RequestResolver } from "effect";
+import { computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
 const router = useRouter();

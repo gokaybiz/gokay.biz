@@ -5,6 +5,9 @@ import type {
     PagesCollectionItem,
     Toc,
 } from "@nuxt/content";
+import { useDayjs, useReadingTime, useSeo } from "#imports";
+import { type PropType, computed, watchEffect } from "vue";
+import { useRoute } from "vue-router";
 
 // --- Types ---
 type PostOrPageItem = PostsCollectionItem | PagesCollectionItem;
@@ -162,7 +165,7 @@ const setupSeo = () => {
         setPageSeo({
             type: "website",
             title: processedPageData.value.title,
-            url: `https://gokay.biz${useRoute().path}`,
+            url: `https://gokay.biz${useRoute()?.path || "/"}`,
             description:
                 processedPageData.value.description ||
                 "Explore this page on Gökay Biz - Full-Stack Developer portfolio and blog.",
