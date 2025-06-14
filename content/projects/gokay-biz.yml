@@ -1,0 +1,17 @@
+title: gokay.biz
+description: >
+  You're looking at it :)
+
+  gokay.biz is my personal website where I share my projects, blog posts and other content related to my work and interests.
+techs:
+  - Vue
+  - Nuxt
+  - TailwindCSS
+  - TypeScript
+  - Node.js
+links:
+  - type: github
+    url: https://github.com/gokaybiz/gokay.biz
+  - type: live
+    url: https://gokay.biz
+status: completed

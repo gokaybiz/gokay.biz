@@ -1,0 +1,8 @@
+title: Obfuscator-class
+description: A PHP obfuscator intended for front‑end code scrambling.
+techs:
+  - PHP
+links:
+  - type: github
+    url: https://github.com/gokaybiz/Obfuscator-class
+status: completed

@@ -1,9 +1,9 @@
-title: Animated Video Thumbnails
-description: A tool for generating gif previews.
-tech:
+title: animated-video-thumbnails
+description: >
+  Python package to generate animated GIF thumbnails (like a preview strip) from video files.
+techs:
   - Python
-  - MoviePy
 links:
   - type: github
-    url: https://github.com/gokaybiz/pixelator
+    url: https://github.com/gokaybiz/animated-video-thumbnails
 status: completed

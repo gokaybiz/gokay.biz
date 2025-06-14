@@ -1,6 +1,9 @@
-title: Pixelator
-description: A tool for pixelating images.
-tech:
+title: pixelator
+description: >
+  A command-line tool written in Go that transforms high-resolution images into stylized pixel art.
+
+  It transforms any image to it's pixelated version by downscaling and applying color quantization. Great for generating game assets or stylized datasets.
+techs:
   - Go
 links:
   - type: github

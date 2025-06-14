@@ -1,0 +1,12 @@
+title: Rock Paper Scissors
+description: >
+  A simple Rock–Paper–Scissors game implemented in Go for learning purposes.
+
+  Based on the classic game mechanics, it allows users to play against the computer.
+techs:
+  - Go
+  - Rest API
+links:
+  - type: github
+    url: https://github.com/gokaybiz/Tas-Kagit-Makas
+status: completed
