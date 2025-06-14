@@ -67,7 +67,17 @@ const createNoneLink = (): LinkType => ({
 const isInternalPath = (href: Href): boolean => {
     if (!href) return false;
     const firstChar = href[0];
-    return firstChar === "/" || firstChar === "#" || !/^https?:\/\//.test(href);
+    if (firstChar === "/" || firstChar === "#") return true;
+
+    if (/^https?:\/\//.test(href)) {
+        try {
+            return new URL(href).hostname === window.location.hostname;
+        } catch {
+            return false;
+        }
+    }
+
+    return true;
 };
 
 const determineLinkType = (
