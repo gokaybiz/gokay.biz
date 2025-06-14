@@ -12,6 +12,7 @@ definePageMeta({
 });
 
 const route = useRoute();
+const normalizePath = useNormalizePath();
 
 // --- Types ---
 type FetchPageError = PostNotFoundError | PostFetchingError;
@@ -87,7 +88,7 @@ const fetchPageData = (
     );
 
 const runPageEffect = async () => {
-    const currentPath = route.path;
+    const currentPath = normalizePath(route.path);
     const exit = await Effect.runPromiseExit(fetchPageData(currentPath));
 
     if (Exit.isFailure(exit)) {
@@ -102,7 +103,10 @@ const runPageEffect = async () => {
     return exit.value;
 };
 
-const { data: page } = await useAsyncData(`post-${route.path}`, runPageEffect);
+const { data: page } = await useAsyncData(
+    `post-${normalizePath(route.path)}`,
+    runPageEffect,
+);
 
 if (page.value && typeof page.value === "object" && "__isError" in page.value) {
     const errorData = page.value;

@@ -10,10 +10,16 @@ definePageMeta({
 
 const route = useRoute();
 const router = useRouter();
+const normalizePath = useNormalizePath();
 
-const { data: page } = await useAsyncData(`page-${route.path}`, () => {
-    return queryCollection("pages").path(`${route.path}`).first();
-});
+const { data: page } = await useAsyncData(
+    `page-${normalizePath(route.path)}`,
+    () => {
+        return queryCollection("pages")
+            .path(`/pages${normalizePath(route.path)}`)
+            .first();
+    },
+);
 
 if (!page.value) {
     router.replace("/404");

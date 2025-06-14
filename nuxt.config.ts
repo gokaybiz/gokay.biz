@@ -160,6 +160,7 @@ export default defineNuxtConfig({
     preset: "netlify",
     prerender: {
       routes: ["/sitemap.xml", "/robots.txt"],
+      autoSubfolderIndex: false,
     },
   },
 });

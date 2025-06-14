@@ -89,10 +89,7 @@ const contentConfig = {
   collections: {
     pages: defineCollection({
       type: "page",
-      source: {
-        prefix: "/",
-        include: "pages/*.md",
-      },
+      source: "pages/*.md",
       schema: PageSchema,
     }),
     posts: defineCollection({

@@ -62,6 +62,7 @@ export default defineEventHandler(async (event) => {
 
     // Add pages
     for (const page of pages) {
+      const removePagePath = page.path.replace("/pages/", "/");
       const lastmod = page.updatedAt
         ? new Date(page.updatedAt).toISOString().split("T")[0]
         : page.createdAt
@@ -70,7 +71,7 @@ export default defineEventHandler(async (event) => {
 
       xml += `
   <url>
-    <loc>${siteUrl}${page.path}</loc>
+    <loc>${siteUrl}${removePagePath}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
