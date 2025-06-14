@@ -44,6 +44,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const attrs = useAttrs();
+const config = useRuntimeConfig();
 
 // --- Constants ---
 const DEFAULT_EXTERNAL_TARGET = "_blank";
@@ -71,7 +72,10 @@ const isInternalPath = (href: Href): boolean => {
 
     if (/^https?:\/\//.test(href)) {
         try {
-            return new URL(href).hostname === window.location.hostname;
+            return (
+                new URL(href).hostname ===
+                new URL(config.public.siteUrl).hostname
+            );
         } catch {
             return false;
         }

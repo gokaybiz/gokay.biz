@@ -152,7 +152,7 @@ export default defineNuxtConfig({
       timezone: "",
       lastfmUser: "",
       vscoUser: "",
-      siteUrl: "https://gokay.biz",
+      siteUrl: "",
       siteName: "Gökay Biz",
     },
   },
