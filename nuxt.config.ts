@@ -69,6 +69,11 @@ export default defineNuxtConfig({
           tagPosition: "head",
           type: "text/javascript",
         },
+        {
+          defer: true,
+          src: "https://kontroll.gokay.biz/beacon.min.js",
+          "data-cf-beacon": '{"token": "265e34b9577b497f8326239f9272c97d"}',
+        },
       ],
     },
     pageTransition: {
