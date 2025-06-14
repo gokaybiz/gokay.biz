@@ -1,4 +1,5 @@
 <script setup>
+import { useNavbar } from "~/composables/useNavbar";
 const { isNavbarVisible } = useNavbar();
 </script>
 

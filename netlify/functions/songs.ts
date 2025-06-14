@@ -1,36 +1,28 @@
 import { Effect } from "effect";
 import type { Context, Config } from "@netlify/functions";
 import { createLastfmService } from "@@/server/services/lastfm";
-import type {
-  LastfmTrack,
-  FrequentTrack,
-  LastfmResponse,
-} from "~/types/lastfm";
+import type { LastfmResponse } from "~/types/lastfm";
+import { createResponse, isValidMethod } from "../utils";
 
 export const config: Config = {
   path: "/api/songs",
 };
 
-export default async (req: Request, context: Context) => {
-  // Set CORS headers
-  const headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-    "Content-Type": "application/json",
-  };
+const createEmptyResponse = (): LastfmResponse => ({
+  recentTracks: [],
+  frequentRecent: [],
+  topMonthly: [],
+});
 
+export default async (req: Request, context: Context) => {
   // Handle preflight requests
   if (req.method === "OPTIONS") {
-    return new Response(null, { status: 200, headers });
+    return createResponse(null, 200);
   }
 
   // Only allow GET requests
-  if (req.method !== "GET") {
-    return new Response(JSON.stringify({ error: "Method not allowed" }), {
-      status: 405,
-      headers,
-    });
+  if (!isValidMethod(req.method)) {
+    return createResponse({ error: "Method not allowed" }, 405);
   }
 
   try {
@@ -45,14 +37,7 @@ export default async (req: Request, context: Context) => {
 
     if (!apiKey) {
       console.error("Last.fm API key not found in environment variables");
-      return new Response(
-        JSON.stringify({
-          recentTracks: [],
-          frequentRecent: [],
-          topMonthly: [],
-        } as LastfmResponse),
-        { status: 200, headers }, // Return empty data instead of error for graceful fallback
-      );
+      return createResponse(createEmptyResponse());
     }
 
     const username = userParam || defaultUser;
@@ -69,31 +54,14 @@ export default async (req: Request, context: Context) => {
         Effect.withRequestCaching(true),
         Effect.catchAll((error) => {
           console.error("Last.fm API Error:", error);
-          return Effect.succeed({
-            recentTracks: [] as LastfmTrack[],
-            frequentRecent: [] as FrequentTrack[],
-            topMonthly: [] as LastfmTrack[],
-          } as LastfmResponse);
+          return Effect.succeed(createEmptyResponse());
         }),
       ),
     );
 
-    return new Response(JSON.stringify(result), {
-      status: 200,
-      headers,
-    });
+    return createResponse(result, 200);
   } catch (error) {
     console.error("Server error:", error);
-    return new Response(
-      JSON.stringify({
-        recentTracks: [],
-        frequentRecent: [],
-        topMonthly: [],
-      } as LastfmResponse),
-      {
-        status: 200, // Return 200 with empty data for graceful fallback
-        headers,
-      },
-    );
+    return createResponse(createEmptyResponse());
   }
 };

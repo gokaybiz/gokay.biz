@@ -2,31 +2,20 @@ import { Effect } from "effect";
 import type { Context, Config } from "@netlify/functions";
 import { createVscoService } from "@@/server/services/vsco";
 import type { VscoImage } from "~/types/vsco";
-
+import { createResponse, createCorsHeaders, isValidMethod } from "../utils";
 export const config: Config = {
   path: "/api/photos",
 };
 
 export default async (req: Request, context: Context) => {
-  // Set CORS headers
-  const headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-    "Content-Type": "application/json",
-  };
-
   // Handle preflight requests
   if (req.method === "OPTIONS") {
-    return new Response(null, { status: 200, headers });
+    return createResponse(null, 200);
   }
 
   // Only allow GET requests
-  if (req.method !== "GET") {
-    return new Response(JSON.stringify({ error: "Method not allowed" }), {
-      status: 405,
-      headers,
-    });
+  if (!isValidMethod(req.method)) {
+    return createResponse({ error: "Method not allowed" }, 405);
   }
 
   try {
@@ -48,15 +37,9 @@ export default async (req: Request, context: Context) => {
       ),
     );
 
-    return new Response(JSON.stringify(result), {
-      status: 200,
-      headers,
-    });
+    return createResponse(result, 200);
   } catch (error) {
     console.error("Server error:", error);
-    return new Response(JSON.stringify([] as VscoImage[]), {
-      status: 200, // Return 200 with empty array for graceful fallback
-      headers,
-    });
+    return createResponse([] as VscoImage[], 200);
   }
 };
