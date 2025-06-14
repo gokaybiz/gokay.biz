@@ -1,0 +1,289 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --font-caveat: Caveat, cursive;
+    --font-dancing-script: Dancing Script, cursive;
+    --font-short-stack: Short Stack, Caveat, cursive;
+    --font-inter: Inter, cursive;
+    --color-neonBlue: #45caff;
+    --wiggleup:
+        radial-gradient(15.37px at 50% 21.6px, #000 99%, #0000 101%) 50% 0/48px
+            100%,
+        radial-gradient(15.37px at 50% -9.6px, #0000 99%, #000 101%)
+            calc(50% - 24px) 12px/48px 100% repeat-x;
+}
+
+@layer base {
+    .responsive-screen {
+        @apply max-w-screen-lg mx-auto px-6 md:px-0;
+    }
+    .doodle * {
+        @apply box-border;
+    }
+
+    .doodle input,
+    .doodle textarea,
+    .doodle table,
+    .doodle img {
+        @apply max-w-full;
+    }
+
+    .doodle fieldset * {
+        @apply max-w-[calc(100vw-100px)];
+    }
+
+    .doodle table {
+        @apply overflow-scroll;
+    }
+
+    .doodle a {
+        @apply text-[#1c1c1c] font-bold;
+    }
+
+    .doodle ul li {
+        @apply list-["*_"];
+    }
+
+    .doodle label {
+        @apply py-1 inline-block;
+    }
+}
+
+@layer components {
+    .doodle button,
+    .doodle textarea,
+    .doodle input,
+    .doodle select {
+        @apply bg-transparent font-short-stack text-base text-[#3c3c3c];
+    }
+
+    .doodle button {
+        @apply text-center;
+    }
+
+    .doodle input[type="color"] {
+        @apply min-h-[1.5em];
+    }
+
+    .doodle pre {
+        @apply overflow-auto;
+    }
+
+    .doodle table {
+        @apply border-collapse overflow-auto block;
+    }
+
+    .doodle table thead {
+        @apply border-b-[3px] border-b-[#bbb];
+    }
+
+    .doodle table td {
+        @apply align-top;
+    }
+
+    .doodle select {
+        @apply appearance-none pr-6;
+    }
+
+    .doodle select[multiple] {
+        @apply bg-none p-0;
+    }
+
+    .doodle button:focus,
+    .doodle textarea:focus,
+    .doodle input:focus,
+    .doodle select:focus {
+        @apply outline-transparent rounded-[5px] shadow-[-2px_5px_53px_-11px_rgba(0,0,0,0.78)];
+    }
+
+    .doodle button:disabled {
+        @apply text-gray-500;
+    }
+
+    .doodle input[type="checkbox"],
+    .doodle input[type="radio"] {
+        @apply appearance-none outline-0 bg-transparent w-[1.5em] h-[1.5em] inline-flex justify-center items-center;
+    }
+
+    .doodle input[type="checkbox"]:after,
+    .doodle input[type="radio"]:after {
+        @apply text-[1.25em] -mb-1;
+        content: " ";
+    }
+
+    .doodle input[type="checkbox"]:disabled:after,
+    .doodle input[type="radio"]:disabled:after {
+        @apply text-gray-500;
+        content: "-";
+    }
+
+    .doodle input[type="checkbox"]:checked:after,
+    .doodle input[type="radio"]:checked:after {
+        content: "*";
+    }
+
+    .doodle input[type="file"]::file-selector-button {
+        @apply text-[1em] bg-transparent text-[#3c3c3c];
+        font-family: inherit;
+    }
+}
+
+@layer utilities {
+    .doodle .border,
+    .doodle-border {
+        border-style: solid;
+        border-width: 0.62rem 0.62rem 0.62rem 0.62rem;
+        border-image: url(/assets/images/button.svg) 10 10 10 10 stretch stretch;
+        border-color: transparent;
+    }
+
+    .doodle button,
+    .doodle input,
+    .doodle select,
+    .doodle input[type="file"]::file-selector-button {
+        border-style: solid;
+        border-width: 0.62rem 0.62rem 0.62rem 0.62rem;
+        border-image: url(/assets/images/button.svg) 10 10 10 10 stretch stretch;
+        border-color: transparent;
+    }
+
+    .doodle fieldset,
+    .doodle textarea,
+    .doodle-border-another {
+        border-style: solid;
+        border-width: 0.62rem 0.62rem 0.62rem 0.62rem;
+        border-image: url(/assets/images/border.svg) 10 10 10 10 stretch stretch;
+        border-color: transparent;
+        border-radius: 13px 16px 17px 17px;
+    }
+
+    .hover\:doodle-border-another {
+        &:hover {
+            @media (hover: hover) {
+                border-style: solid;
+                border-width: 0.25rem;
+                border-image: url(/assets/images/border.svg) 10 10 10 10 stretch
+                    stretch;
+                border-color: transparent;
+            }
+        }
+    }
+
+    .doodle hr {
+        border-style: solid;
+        border-width: 0 3px 6px 3px;
+        border-image: url(/assets/images/hr.svg) 0 3 6 3 stretch stretch;
+        border-color: transparent;
+    }
+
+    .doodle blockquote {
+        border-left-style: solid;
+        border-width: 0 6px 3px 6px;
+        border-image: url(/assets/images/bq.svg) 0 6 3 6 stretch stretch;
+        padding-left: 0.5em;
+        border-right-width: 0;
+        border-color: transparent;
+    }
+
+    .doodle table caption {
+        border-bottom-style: solid;
+        border-width: 0 3px 6px 3px;
+        border-image: url(/assets/images/hr.svg) 0 3 6 3 stretch stretch;
+        border-color: transparent;
+    }
+
+    .doodle img {
+        border-radius: 3px;
+        border-style: solid;
+        border-width: 3px;
+        border-image: url(/assets/images/button.svg) 3 3 3 3 stretch stretch;
+        border-color: transparent;
+    }
+
+    .doodle select {
+        background: url(/assets/images/caret.svg) no-repeat right transparent;
+        background-position-x: calc(100% - 10px);
+        border-color: transparent;
+    }
+
+    .doodle input[type="checkbox"] {
+        border-width: 6px;
+        border-image: url(/assets/images/checkbox.svg) 6 6 6 6 stretch stretch;
+        border-color: transparent;
+    }
+
+    .doodle input[type="radio"] {
+        border-width: 16px;
+        border-image: url(/assets/images/radio.svg) 16 16 16 16 stretch stretch;
+        border-color: transparent;
+    }
+
+    .dark .prose .shiki {
+        @apply bg-zinc-900;
+    }
+
+    .prose .shiki {
+        box-shadow: 0 0 0.5rem 0.06rem #3b6eb6;
+    }
+
+    .prose {
+        .shiki {
+            @apply mb-5 relative;
+
+            .filename {
+                @apply font-light mt-3 mr-3 text-xs right-0 text-white/50 z-10 absolute;
+            }
+
+            @apply rounded-lg p-4 overflow-x-auto bg-neutral-700;
+        }
+
+        ol {
+            @apply pl-0;
+        }
+
+        video {
+            @apply rounded-lg;
+        }
+
+        kbd {
+            @apply rounded-lg bg-black/10 px-2 py-1 text-sm border-b-2 border-black/30 cursor-default dark:bg-white/10 dark:border-white/30;
+        }
+
+        p code {
+            @apply bg-blue-100 py-px px-1 text-blue-600 dark:bg-white/5;
+
+            &::before,
+            &::after {
+                content: "`";
+            }
+        }
+    }
+}
+
+@utility min-h-window {
+    min-height: calc(100% - 300px);
+}
+
+@custom-variant hover {
+    /* If the browser supports the hover event, apply the specified classes on the :hover event */
+    @media (hover: hover) {
+        &:hover {
+            @slot;
+        }
+    }
+
+    /* If hover is not supported, apply the styling immediately */
+    /*
+    NOTE: This can be omitted if you don't want the hover to apply on mobile.
+          If you add this, the hover design will be displayed by default on mobile.
+          If use this, considering the example, the text will be underlined by default on a touchscreen.
+  */
+    @media not all and (hover: hover) {
+        & {
+            @slot;
+        }
+    }
+}

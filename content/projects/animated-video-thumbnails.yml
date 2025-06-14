@@ -1,0 +1,9 @@
+title: Animated Video Thumbnails
+description: A tool for generating gif previews.
+tech:
+  - Python
+  - MoviePy
+links:
+  - type: github
+    url: https://github.com/gokaybiz/pixelator
+status: completed

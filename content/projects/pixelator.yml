@@ -1,0 +1,8 @@
+title: Pixelator
+description: A tool for pixelating images.
+tech:
+  - Go
+links:
+  - type: github
+    url: https://github.com/gokaybiz/pixelator
+status: completed

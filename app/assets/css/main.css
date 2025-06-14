@@ -1,0 +1,13 @@
+@import "~/assets/css/tailwind.css";
+@import "~/assets/css/transitions.css";
+
+html,
+body {
+    scroll-behavior: smooth;
+    scroll-padding: 16px;
+    scrollbar-gutter: stable;
+}
+
+a {
+    @apply dark:text-gray-200 transition hover:decoration-wavy hover:underline hover:underline-offset-4 underline;
+}
