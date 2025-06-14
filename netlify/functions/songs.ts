@@ -8,7 +8,7 @@ import type {
 } from "~/types/lastfm";
 
 export const config: Config = {
-  path: "/api/photos",
+  path: "/api/songs",
 };
 
 export default async (req: Request, context: Context) => {
