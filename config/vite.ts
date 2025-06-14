@@ -18,7 +18,7 @@ export const viteConfig: ViteConfig = {
       sourcemap: process.env.NODE_ENV === "development",
       rollupOptions: {
         output: {
-          experimentalMinChunkSize: 46 * 1024, // 46kb
+          experimentalMinChunkSize: 20 * 1024, // 20kb for chunking
         },
       },
       minify: "terser",
@@ -27,6 +27,14 @@ export const viteConfig: ViteConfig = {
           drop_console: true,
           drop_debugger: true,
           pure_funcs: ["console.log", "console.info"],
+          unsafe_comps: true,
+          unsafe_Function: true,
+          unsafe_math: true,
+          unsafe_symbols: true,
+          unsafe_methods: true,
+          unsafe_proto: true,
+          unsafe_regexp: true,
+          unsafe_undefined: true,
         },
         format: {
           comments: false,
@@ -35,15 +43,28 @@ export const viteConfig: ViteConfig = {
           safari10: true,
         },
       },
-      cssMinify: true,
+      cssMinify: "lightningcss",
       cssCodeSplit: true,
       modulePreload: {
         polyfill: true,
       },
+      assetsInlineLimit: 8192, // 8kb inline limit
     },
     optimizeDeps: {
-      include: ["vue", "vue-router"],
-      exclude: ["@nuxt/telemetry"],
+      include: ["vue", "vue-router", "@unhead/vue", "dayjs"],
+      exclude: ["@nuxt/telemetry", "@nuxt/devtools"],
+      esbuildOptions: {
+        define: {
+          global: "globalThis",
+        },
+        supported: {
+          bigint: true,
+        },
+      },
+    },
+    esbuild: {
+      drop:
+        process.env.NODE_ENV === "production" ? ["console", "debugger"] : [],
     },
   },
 };

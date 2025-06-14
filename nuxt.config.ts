@@ -13,8 +13,18 @@ export default defineNuxtConfig({
     defaults: {
       nuxtLink: {
         trailingSlash: "remove",
+        prefetchOn: { visibility: true, interaction: true },
       },
     },
+  },
+  router: {
+    options: {
+      scrollBehaviorType: "smooth",
+    },
+  },
+  features: {
+    inlineStyles: false,
+    noScripts: false,
   },
   compatibilityDate: "2025-06-02",
   // Merge modular options with the main config

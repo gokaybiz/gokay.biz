@@ -18,13 +18,18 @@ export const modulesConfig: ModulesConfig = {
       Inter: "100..900",
     },
     display: "swap",
+    preconnect: true,
+    preload: true,
+    useStylesheet: true,
   },
   image: {
     provider: "none",
+    quality: 70,
   },
   dayjs: {
     locales: ["en"],
     plugins: ["timezone", "utc"],
+    defaultLocale: "en",
   },
   content: {
     build: {
@@ -36,6 +41,12 @@ export const modulesConfig: ModulesConfig = {
           depth: 5,
           searchDepth: 5,
         },
+        rehypePlugins: {
+          "rehype-slug": {},
+          "rehype-autolink-headings": {
+            behavior: "wrap",
+          },
+        },
       },
     },
     renderer: {
@@ -44,6 +55,9 @@ export const modulesConfig: ModulesConfig = {
         a: "UtilLink",
         // img: "UtilImg", // <- Causing bug in content rendering (id mismatch with heading tags)
       },
+    },
+    experimental: {
+      nativeSqlite: true,
     },
   },
 };
