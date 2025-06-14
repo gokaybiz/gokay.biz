@@ -4,7 +4,7 @@ export const devConfig: DevConfig = {
   devServer: {
     host: "0.0.0.0",
   },
-  debug: true,
+  debug: process.env.NODE_ENV === "development",
   devtools: { enabled: false },
   telemetry: false,
 };
