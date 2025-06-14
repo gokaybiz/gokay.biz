@@ -72,7 +72,7 @@ export default defineNuxtConfig({
         {
           defer: true,
           src: "https://kontroll.gokay.biz/beacon.min.js",
-          "data-cf-beacon": '{"token": "265e34b9577b497f8326239f9272c97d"}',
+          "data-cf-beacon": `{"token": "${process.env.CLOUDFLARE_WEB_ANALYTICS_TOKEN}"}`,
         },
       ],
     },
