@@ -18,7 +18,7 @@ Netlify Functions are serverless functions that run on AWS Lambda under the hood
 - Integrate with third-party services
 - Process data without a traditional backend
 
-Each function is a JavaScript/TypeScript file that exports a handler function. And Netlify automatically deploys them as serverless endpoints.
+Each function is a JavaScript/TypeScript or Go file that exports a handler function. And Netlify automatically deploys them as serverless endpoints.
 
 ## Prerequisites and Setup
 First, install the Netlify CLI globally:
