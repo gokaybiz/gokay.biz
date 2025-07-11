@@ -36,6 +36,11 @@ const props = withDefaults(defineProps<Props>(), {
   optimize: true,
 });
 
+const loadedSize = reactive({
+  width: props.width,
+  height: props.height
+});
+
 // --- Constants ---
 const FALLBACK_URL = "/icon.png";
 
@@ -83,6 +88,7 @@ const createBackgroundStyle = (
 ) =>
   isLoaded
     ? {
+        display: "inline-block",
         backgroundImage: `url('${url}')`,
         backgroundPosition: "center",
         backgroundSize: fit,
@@ -94,7 +100,11 @@ const parseIntSafe = (value: string): number => Number.parseInt(value);
 const loadImageAsync = (url: string): Promise<void> =>
   new Promise((resolve, reject) => {
     const image = new Image();
-    image.onload = () => resolve();
+    image.onload = () => {
+      loadedSize.width ??= image.width;
+      loadedSize.height ??= image.height;
+      return resolve();
+    }
     image.onerror = () => reject(new Error(`Failed to load image: ${url}`));
     image.src = url;
   });
@@ -120,7 +130,7 @@ const displayUrl = computed((): string =>
 const isLoaded = computed((): boolean => imageState.value.status === "loaded");
 
 const imageStyles = computed(() =>
-  createImageStyles(props.width, props.height),
+  createImageStyles(loadedSize.width, loadedSize.height),
 );
 
 const backgroundStyle = computed(() => ({
@@ -171,7 +181,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div
+  <span
     v-if="props.src"
     :style="backgroundStyle"
     :class="{
@@ -187,5 +197,5 @@ onMounted(() => {
     >
       {{ props.caption }}
     </span>
-  </div>
+  </span>
 </template>
