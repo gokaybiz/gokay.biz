@@ -12,6 +12,8 @@ interface ModalState {
 interface ProcessedImage extends VscoImage {
     readonly formattedDate: string;
     readonly clickHandler: () => void;
+    readonly loaded: boolean;
+    readonly id: string;
 }
 
 // ---Constants---
@@ -87,9 +89,7 @@ const preloadImages = (
 
 /// --- States ---
 const modalState = ref<ModalState>(createModalState(false));
-const preloadCounter = ref(0);
-const preloadTarget = ref(0);
-const hasStartedPreloading = ref(false);
+const loadedImages = ref<Record<string, boolean>>({});  // Track loaded state by image ID
 const dayjs = useDayjs();
 const { setPageSeo } = useSeo();
 
@@ -102,23 +102,10 @@ const { data, error, status, refresh, clear } = useLazyFetch<VscoImage[]>(
 );
 
 /// -- Computed props ---
-// This computed ensures we always know if we should be preloading
+// This computed ensures that we always know if we should be showing skeletons
 const shouldShowSkeleton = computed(() => {
     // Always show skeleton when pending
-    if (status.value === "pending") return true;
-
-    // Show skeleton if we have data but haven't started preloading yet
-    if (data.value && data.value.length > 0 && !hasStartedPreloading.value)
-        return true;
-
-    // Show skeleton if we're still preloading
-    if (
-        hasStartedPreloading.value &&
-        preloadCounter.value < preloadTarget.value
-    )
-        return true;
-
-    return false;
+    return status.value === "pending";
 });
 
 const processedImages = computed(
@@ -129,6 +116,8 @@ const processedImages = computed(
             clickHandler: createImageClickHandler(image.photo_url, (state) => {
                 modalState.value = state;
             }),
+            loaded: loadedImages.value[image.photo_url] || false,
+            id: image.photo_url, // Using photo_url as a unique identifier
         })) || [],
 );
 
@@ -182,29 +171,30 @@ watch(
 watch(
     () => data.value,
     async (newData) => {
-        // Reset preload state immediately when data changes
-        preloadCounter.value = 0;
-        hasStartedPreloading.value = false;
-        preloadTarget.value = 0;
+        // Reset loaded images state when data changes
+        loadedImages.value = {};
 
         if (!newData || newData.length === 0) return;
 
-        // Set preload target and mark as started immediately
-        preloadTarget.value = calculateMinImageCount(newData.length);
-        hasStartedPreloading.value = true;
+        // Start preloading each image individually
+        newData.forEach((image) => {
+            const img = new window.Image();
+            img.src = image.photo_url;
+            
+            const handleLoad = () => {
+                // Mark this specific image as loaded
+                loadedImages.value = {
+                    ...loadedImages.value,
+                    [image.photo_url]: true
+                };
+                console.log(`Image loaded: ${image.photo_url}`);
+            };
+            
+            img.onload = handleLoad;
+            img.onerror = handleLoad; // Also mark as "loaded" on error to avoid UI getting stuck
+        });
 
-        console.log(`Starting to preload ${preloadTarget.value} images...`);
-
-        // Now start preloading
-        await Effect.runPromise(
-            preloadImages(newData, preloadTarget.value, () => {
-                preloadCounter.value++;
-            }),
-        );
-
-        console.log(
-            `Preloading complete: ${preloadCounter.value} images loaded`,
-        );
+        console.log(`Started loading ${newData.length} images individually...`);
     },
     { immediate: true },
 );
@@ -267,25 +257,44 @@ setPageSeo({
                 >
                     <div
                         v-for="img in processedImages"
-                        :key="img.photo_url"
-                        class="break-inside-avoid relative group cursor-pointer"
-                        @click="img.clickHandler"
+                        :key="img.id"
+                        class="break-inside-avoid relative group cursor-pointer mb-4"
+                        @click="img.loaded ? img.clickHandler : null"
                     >
-                        <NuxtImg
-                            :src="img.photo_url"
-                            alt="Photography"
-                            class="w-full rounded-lg shadow-md transition-transform duration-300 group-hover:scale-105"
-                            width="800"
-                            height="600"
-                        />
-                        <div
-                            class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 rounded-lg group-hover:scale-107 transition-[opacity,transform] duration-150"
-                        />
-                        <span
-                            class="absolute bottom-2 right-3 text-xs bg-white/80 dark:bg-black/60 dark:text-white/60 px-2 py-1 rounded font-mono"
+                        <!-- Loading skeleton placeholder -->
+                        <div 
+                            v-if="!img.loaded" 
+                            class="relative w-full h-64 rounded-lg bg-gray-100 dark:bg-gray-800 animate-pulse"
                         >
-                            {{ img.formattedDate }}
-                        </span>
+                            <!-- Date overlay still shows in loading state -->
+                            <span
+                                class="absolute bottom-2 right-3 text-xs bg-white/80 dark:bg-black/60 dark:text-white/60 px-2 py-1 rounded font-mono"
+                            >
+                                {{ img.formattedDate }}
+                            </span>
+                        </div>
+
+                        <!-- Actual image (with fade-in effect when loaded) -->
+                        <div
+                            v-if="img.loaded"
+                            class="image-container"
+                        >
+                            <NuxtImg
+                                :src="img.photo_url"
+                                alt="Photography"
+                                class="w-full rounded-lg shadow-md transition-transform duration-300 group-hover:scale-105 fade-in"
+                                width="800"
+                                height="600"
+                            />
+                            <div
+                                class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 rounded-lg group-hover:scale-107 transition-[opacity,transform] duration-150"
+                            />
+                            <span
+                                class="absolute bottom-2 right-3 text-xs bg-white/80 dark:bg-black/60 dark:text-white/60 px-2 py-1 rounded font-mono"
+                            >
+                                {{ img.formattedDate }}
+                            </span>
+                        </div>
                     </div>
                 </div>
 
@@ -318,3 +327,22 @@ setPageSeo({
         </div>
     </div>
 </template>
+
+<style scoped>
+.fade-in {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.image-container {
+  overflow: hidden;
+}
+</style>
