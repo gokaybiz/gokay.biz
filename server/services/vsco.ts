@@ -1,5 +1,9 @@
 import { Duration, Effect, Option, Schedule } from "effect";
+import type { Dispatcher } from "undici";
 import type { VscoImage, VscoMediaItem, VscoMediaResponse } from "~/types/vsco";
+import { tlsRequest } from "./tlsHandler";
+
+type Response = Dispatcher.ResponseData<unknown>;
 
 class FetchError {
 	readonly _tag = "FetchError";
@@ -36,31 +40,23 @@ const buildUrl = (
 
 const fetchJson = <T>(url: string): Effect.Effect<T, FetchError | ApiError> => {
 	const fetchEffect = Effect.tryPromise({
-		try: () =>
-			fetch(url, {
+		try: async () => {
+			return await tlsRequest(url, {
 				headers: {
 					Authorization: "Bearer 7356455548d0a1d886db010883388d08be84d0c9",
-					"User-Agent":
-						"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
 				},
-			}),
+			});
+		},
 		catch: (e) => new FetchError(e, url),
 	});
+
 	const handleResponse = (
 		response: Response,
 	): Effect.Effect<T, FetchError | ApiError> => {
-		if (response.ok) {
-			return Effect.tryPromise({
-				try: () => response.json() as Promise<T>,
-				catch: (e) => new FetchError(e, url),
-			});
-		}
-		return Effect.fail(
-			new ApiError(
-				`HTTP Error ${response.status} occured for ${url}`,
-				response.status,
-			),
-		);
+		return Effect.tryPromise({
+			try: () => response.body.json() as Promise<T>,
+			catch: (e) => new FetchError(e, url),
+		});
 	};
 
 	return fetchEffect.pipe(
