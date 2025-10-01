@@ -1,7 +1,7 @@
 import { Duration, Effect, Option, Schedule } from "effect";
 import type { Dispatcher } from "undici";
+import { tlsRequest } from "~/../server/services/utils/tlsHandler";
 import type { VscoImage, VscoMediaItem, VscoMediaResponse } from "~/types/vsco";
-import { tlsRequest } from "./tlsHandler";
 
 type Response = Dispatcher.ResponseData<unknown>;
 
