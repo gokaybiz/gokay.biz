@@ -241,7 +241,7 @@ setPageSeo({
                 <!-- Skeleton state -->
                 <div
                     v-if="shouldShowSkeleton"
-                    class="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-4"
+                    class="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-8 md:space-y-4"
                 >
                     <div
                         v-for="i in SKELETON_COUNT"
@@ -258,17 +258,16 @@ setPageSeo({
                     <div
                         v-for="img in processedImages"
                         :key="img.id"
-                        class="break-inside-avoid relative group cursor-pointer mb-4"
-                        @click="img.loaded ? img.clickHandler : null"
+                        class="break-inside-avoid relative group cursor-pointer mb-4 mx-auto"
                     >
                         <!-- Loading skeleton placeholder -->
                         <div 
                             v-if="!img.loaded" 
-                            class="relative w-full h-64 rounded-lg bg-gray-100 dark:bg-gray-800 animate-pulse"
+                            class="inline-block h-64 min-w-fit w-full rounded-lg bg-gray-100 dark:bg-gray-800 animate-pulse"
                         >
                             <!-- Date overlay still shows in loading state -->
                             <span
-                                class="absolute bottom-2 right-3 text-xs bg-white/80 dark:bg-black/60 dark:text-white/60 px-2 py-1 rounded font-mono"
+                                class="absolute bottom-3 right-3 text-xs bg-white/80 dark:bg-black/60 dark:text-white/60 px-2 py-1 rounded font-mono"
                             >
                                 {{ img.formattedDate }}
                             </span>
@@ -278,6 +277,7 @@ setPageSeo({
                         <div
                             v-if="img.loaded"
                             class="image-container"
+                            @click="img.clickHandler"
                         >
                             <NuxtImg
                                 :src="img.photo_url"
@@ -287,7 +287,7 @@ setPageSeo({
                                 height="600"
                             />
                             <div
-                                class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 rounded-lg group-hover:scale-107 transition-[opacity,transform] duration-150"
+                                class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 rounded-lg group-hover:scale-103 transition-[opacity,transform] duration-150"
                             />
                             <span
                                 class="absolute bottom-2 right-3 text-xs bg-white/80 dark:bg-black/60 dark:text-white/60 px-2 py-1 rounded font-mono"
