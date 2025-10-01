@@ -31,8 +31,10 @@ class TimeUpdateError extends Data.TaggedError("TimeUpdateError")<{
 }> {}
 
 // --- Constants ---
-const LOCATION = "Stockholm, Sweden" as const;
-const AVATAR_URL = "https://github.com/gokaybiz.png" as const;
+const config = useRuntimeConfig();
+const LOCATION = (config.public.location as string) || "Stockholm, Sweden" as const;
+const TIMEZONE = (config.public.timezone as string) || "UTC" as const;
+const AVATAR_URL = (config.public.avatarUrl as string) || "https://github.com/gokaybiz.png" as const;
 const TIME_UPDATE_INTERVAL = Duration.seconds(1);
 
 const PERSONAL_IDENTIFIER: PersonalIdentifier = {
@@ -186,15 +188,13 @@ const stopTimeUpdates = () =>
   });
 
 // --- Lifecycle Management ---
-const config = useRuntimeConfig();
-const timezone = (config.public.timezone as string) || "UTC";
 
 // Initialize time on component creation
-Effect.runSync(initializeTime(timezone));
+Effect.runSync(initializeTime(TIMEZONE));
 
 // Start time updates when component mounts
 onMounted(() => {
-  Effect.runSync(startTimeUpdates(timezone));
+  Effect.runSync(startTimeUpdates(TIMEZONE));
 });
 
 // Clean up when component unmounts
@@ -230,7 +230,7 @@ onUnmounted(() => {
           class="text-gray-500 dark:text-gray-400"
         >
           <span class="pr-0.5" v-if="item.icon">{{ item.icon }} </span>
-          {{ item.content }}
+          <span v-html="item.content"></span>
         </p>
       </div>
 
